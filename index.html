@@ -1,268 +1,330 @@
-<!DOCTYPE html><!--[if lt IE 9]><html class="no-js lt-ie9" lang="en" dir="ltr"><![endif]--><!--[if gt IE 8]><!-->
-<html class="no-js" lang="en" dir="ltr">
-<!--<![endif]-->
-<head>
-<meta charset="utf-8">
-<!-- Web Experience Toolkit (WET) / Boîte à outils de l'expérience Web (BOEW)
-wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
-<title>Submissions Under Review - Canada.ca</title>
-<meta content="width=device-width,initial-scale=1" name="viewport">
-<!-- Meta data -->
-<meta name="description" content="Web Experience Toolkit (WET) includes reusable components for building and maintaining innovative Web sites that are accessible, usable, and interoperable. These reusable components are open source software and free for use by departments and external Web communities">
-<!-- Meta data-->
-<!--[if gte IE 9 | !IE ]><!-->
-<link href="./assets/favicon.ico" rel="icon" type="image/x-icon">
-<link rel="stylesheet" href="./css/wet-boew.min.css">
-<!--<![endif]-->
-<link rel="stylesheet" href="./css/theme.min.css">
-<!--[if lt IE 9]>
-<link href="./assets/favicon.ico" rel="shortcut icon" />
+<?php
+//============================================================+
+// File name   : example_006.php
+// Begin       : 2008-03-04
+// Last Update : 2013-05-14
+//
+// Description : Example 006 for TCPDF class
+//               WriteHTML and RTL support
+//
+// Author: Nicola Asuni
+//
+// (c) Copyright:
+//               Nicola Asuni
+//               Tecnick.com LTD
+//               www.tecnick.com
+//               info@tecnick.com
+//============================================================+
 
-<link rel="stylesheet" href="./css/ie8-wet-boew.min.css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="./js/ie8-wet-boew.min.js"></script>
-<![endif]-->
-<!--[if lte IE 9]>
+/**
+ * Creates an example PDF TEST document using TCPDF
+ * @package com.tecnick.tcpdf
+ * @abstract TCPDF - Example: WriteHTML and RTL support
+ * @author Nicola Asuni
+ * @since 2008-03-04
+ */
 
+// Include the main TCPDF library (search for installation path).
+require_once('tcpdf_include.php');
 
-<![endif]-->
-<noscript><link rel="stylesheet" href="./css/noscript.min.css" /></noscript>
-<!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
-<script>dataLayer1 = [];</script>
-<!-- End Google Tag Manager -->
-</head>
-<body vocab="http://schema.org/" typeof="WebPage">
-<!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
-<noscript><iframe title="Google Tag Manager" src="//www.googletagmanager.com/ns.html?id=GTM-TLGQ9K" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer1'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer1','GTM-TLGQ9K');</script>
-<!-- End Google Tag Manager -->
-<ul id="wb-tphp">
-<li class="wb-slc">
-<a class="wb-sl" href="#wb-cont">Skip to main content</a>
-</li>
-<li class="wb-slc visible-sm visible-md visible-lg">
-<a class="wb-sl" href="#wb-info">Skip to "About this site"</a>
-</li>
-</ul>
-<header role="banner">
-<div id="wb-bnr" class="container">
-<section id="wb-lng" class="visible-md visible-lg text-right">
-<h2 class="wb-inv">Language selection</h2>
-<div class="row">
-<div class="col-md-12">
-<ul class="list-inline margin-bottom-none">
-<li><a lang="fr" href="content-fr.html">Français</a></li>
-</ul>
-</div>
-</div>
-</section>
-<div class="row">
-<div class="brand col-xs-8 col-sm-9 col-md-6">
-<a href="http://www.canada.ca/en/index.html"><object type="image/svg+xml" tabindex="-1" data="./assets/sig-blk-en.svg"></object><span class="wb-inv"> Government of Canada</span></a>
-</div>
-<section class="wb-mb-links col-xs-4 col-sm-3 visible-sm visible-xs" id="wb-glb-mn">
-<h2>Search and menus</h2>
-<ul class="list-inline text-right chvrn">
-<li><a href="#mb-pnl" title="Search and menus" aria-controls="mb-pnl" class="overlay-lnk" role="button"><span class="glyphicon glyphicon-search"><span class="glyphicon glyphicon-th-list"><span class="wb-inv">Search and menus</span></span></span></a></li>
-</ul>
-<div id="mb-pnl"></div>
-</section>
-<section id="wb-srch" class="col-xs-6 text-right visible-md visible-lg">
-<h2 class="wb-inv">Search</h2>
-<form action="#" method="post" name="cse-search-box" role="search" class="form-inline">
-<div class="form-group">
-<label for="wb-srch-q" class="wb-inv">Search website</label>
-<input id="wb-srch-q" list="wb-srch-q-ac" class="wb-srch-q form-control" name="q" type="search" value="" size="27" maxlength="150" placeholder="Search Canada.ca">
-<datalist id="wb-srch-q-ac">
-<!--[if lte IE 9]><select><![endif]-->
-<!--[if lte IE 9]></select><![endif]-->
-</datalist>
-</div>
-<div class="form-group submit">
-<button type="submit" id="wb-srch-sub" class="btn btn-primary btn-small" name="wb-srch-sub"><span class="glyphicon-search glyphicon"></span><span class="wb-inv">Search</span></button>
-</div>
-</form>
-</section>
-</div>
-</div>
-<nav role="navigation" id="wb-sm" class="wb-menu visible-md visible-lg" data-trgt="mb-pnl" data-ajax-fetch="./ajax/sitemenu-en.html" typeof="SiteNavigationElement">
-<h2 class="wb-inv">Topics menu</h2>
-<div class="container nvbar">
-<div class="row">
-<ul class="list-inline menu">
-<li><a href="http://www.esdc.gc.ca/en/jobs/index.page">Jobs</a></li>
-<li><a href="http://www.cic.gc.ca/english/index.asp">Immigration</a></li>
-<li><a href="http://travel.gc.ca/">Travel</a></li>
-<li><a href="http://www.canada.ca/en/services/business/index.html">Business</a></li>
-<li><a href="http://www.canada.ca/en/services/benefits/index.html">Benefits</a></li>
-<li><a href="http://healthycanadians.gc.ca/index-eng.php">Health</a></li>
-<li><a href="http://www.canada.ca/en/services/taxes/index.html">Taxes</a></li>
-<li><a href="http://www.canada.ca/en/services/index.html">More services</a></li>
-</ul>
-</div>
-</div>
-</nav>
-<nav role="navigation" id="wb-bc" class="" property="breadcrumb">
-<h2 class="wb-inv">You are here:</h2>
-<div class="container">
-<div class="row">
-<ol class="breadcrumb">
-<li><a href="http://www.canada.ca/en/index.html">Home</a></li>
-<li>Submissions Under Review</li>
+// create new PDF document
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+// set document information
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 006');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+// set default header data
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 006', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+$pdf->SetFont('dejavusans', '', 10);
+
+// add a page
+$pdf->AddPage();
+
+// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
+
+// create some HTML content
+$html = '<h1>HTML Example</h1>
+Some special characters: &lt; € &euro; &#8364; &amp; è &egrave; &copy; &gt; \\slash \\\\double-slash \\\\\\triple-slash
+<h2>List</h2>
+List example:
+<ol>
+    <li><img src="images/logo_example.png" alt="test alt attribute" width="30" height="30" border="0" /> test image</li>
+    <li><b>bold text</b></li>
+    <li><i>italic text</i></li>
+    <li><u>underlined text</u></li>
+    <li><b>b<i>bi<u>biu</u>bi</i>b</b></li>
+    <li><a href="http://www.tecnick.com" dir="ltr">link to http://www.tecnick.com</a></li>
+    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.<br />Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</li>
+    <li>SUBLIST
+        <ol>
+            <li>row one
+                <ul>
+                    <li>sublist</li>
+                </ul>
+            </li>
+            <li>row two</li>
+        </ol>
+    </li>
+    <li><b>T</b>E<i>S</i><u>T</u> <del>line through</del></li>
+    <li><font size="+3">font + 3</font></li>
+    <li><small>small text</small> normal <small>small text</small> normal <sub>subscript</sub> normal <sup>superscript</sup> normal</li>
 </ol>
-</div>
-</div>
-</nav>
-</header>
-<main role="main" property="mainContentOfPage" class="container">
-<h1 property="name" id="wb-cont">Submissions Under Review</h1>
-<section>
-
-	<br /><br />
-<div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h2 class="panel-title">Submissions Under Review Search</h2>
-						</div>
-						<div class="panel-body">
-	<p class="font-large">Health Canada will implement new standard practices to inform Canadians of new active substances under consideration for market authorisation. As an integral part of the submission process, Health Canada will release the new active substance without compromising proprietary concerns.</p>
-	<p class="font-large">Search for consumer information on drug product use, safety and common and reported side effects.</p>						
-<form action="SUR_SearchResults_Sort.html" method="get">
-  <div>
-    <input name="trm" type="text" id="drugsearch" list="list-liste" placeholder="Enter text here to search for a drug submission by medicinal ingredient or therapeutic class" class="full-width" />
-    <datalist id="list-liste" data-ajax-replace="./list-liste-eng.txt"> </datalist> </div>
-</form>
-	<form align="center" method="get" action="SUR_SearchResults_Sort.html">
-    <br />
-	<button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-						</div>
-</div>
-</div>	
-<br />
-
-<br /><p class="font-large">For this pilot, Health Canada is only proposing to include New Active Substances (for now) and only those submitted after consultation with industry so that the sponsor is aware that this information (non-proprietary name and therapeutic class) will be posted.</p>
-</section>
-
-
-</div>
-<div class="form-group">
-<div class="col-sm-offset-3 col-sm-9">
-
-</div>
-</div>
-</form>
-<div class="row pagedetails">
-<div class="col-xs-6 datemod">
-<dl id="wb-dtmd">
-<dt>Date modified:&#32;</dt>
-<dd><time property="dateModified">2015-01-21</time></dd>
+<dl>
+    <dt>Coffee</dt>
+    <dd>Black hot drink</dd>
+    <dt>Milk</dt>
+    <dd>White cold drink</dd>
 </dl>
-<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-<div class="well">
-<h4>Demonstration of different types of searches:</h4>
-</form>
-	<form align="center" method="get" action="SUR_SearchResults_INN.html">
-    <br />
-	<button type="submit" class="btn btn-primary">Submit - INN</button><p>Demonstrates a search for "Ciclosporin"</p>
-</form>
-</form>
-	<form align="center" method="get" action="SUR_SearchResults_ATC.html">
-    <br />
-	<button type="submit" class="btn btn-primary">Submit - ATC</button><p>Demonstrates a search for "Antiepileptics"</p>
-</form>
-</form>
+<div style="text-align:center">IMAGES<br />
+<img src="images/logo_example.png" alt="test alt attribute" width="100" height="100" border="0" /><img src="images/tcpdf_box.svg" alt="test alt attribute" width="100" height="100" border="0" /><img src="images/logo_example.jpg" alt="test alt attribute" width="100" height="100" border="0" />
+</div>';
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+
+// output some RTL HTML content
+$html = '<div style="text-align:center">The words &#8220;<span dir="rtl">&#1502;&#1494;&#1500; [mazel] &#1496;&#1493;&#1489; [tov]</span>&#8221; mean &#8220;Congratulations!&#8221;</div>';
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// test some inline CSS
+$html = '<p>This is just an example of html code to demonstrate some supported CSS inline styles.
+<span style="font-weight: bold;">bold text</span>
+<span style="text-decoration: line-through;">line-trough</span>
+<span style="text-decoration: underline line-through;">underline and line-trough</span>
+<span style="color: rgb(0, 128, 64);">color</span>
+<span style="background-color: rgb(255, 0, 0); color: rgb(255, 255, 255);">background color</span>
+<span style="font-weight: bold;">bold</span>
+<span style="font-size: xx-small;">xx-small</span>
+<span style="font-size: x-small;">x-small</span>
+<span style="font-size: small;">small</span>
+<span style="font-size: medium;">medium</span>
+<span style="font-size: large;">large</span>
+<span style="font-size: x-large;">x-large</span>
+<span style="font-size: xx-large;">xx-large</span>
+</p>';
+
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// reset pointer to the last page
+$pdf->lastPage();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Print a table
+
+// add a page
+$pdf->AddPage();
+
+// create some HTML content
+$subtable = '<table border="1" cellspacing="6" cellpadding="4"><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table>';
+
+$html = '<h2>HTML TABLE:</h2>
+<table border="1" cellspacing="3" cellpadding="4">
+    <tr>
+        <th>#</th>
+        <th align="right">RIGHT align</th>
+        <th align="left">LEFT align</th>
+        <th>4A</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td bgcolor="#cccccc" align="center" colspan="2">A1 ex<i>amp</i>le <a href="http://www.tcpdf.org">link</a> column span. One two tree four five six seven eight nine ten.<br />line after br<br /><small>small text</small> normal <sub>subscript</sub> normal <sup>superscript</sup> normal  bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<ol><li>first<ol><li>sublist</li><li>sublist</li></ol></li><li>second</li></ol><small color="#FF0000" bgcolor="#FFFF00">small small small small small small small small small small small small small small small small small small small small</small></td>
+        <td>4B</td>
+    </tr>
+    <tr>
+        <td>'.$subtable.'</td>
+        <td bgcolor="#0000FF" color="yellow" align="center">A2 € &euro; &#8364; &amp; è &egrave;<br/>A2 € &euro; &#8364; &amp; è &egrave;</td>
+        <td bgcolor="#FFFF00" align="left"><font color="#FF0000">Red</font> Yellow BG</td>
+        <td>4C</td>
+    </tr>
+    <tr>
+        <td>1A</td>
+        <td rowspan="2" colspan="2" bgcolor="#FFFFCC">2AA<br />2AB<br />2AC</td>
+        <td bgcolor="#FF0000">4D</td>
+    </tr>
+    <tr>
+        <td>1B</td>
+        <td>4E</td>
+    </tr>
+    <tr>
+        <td>1C</td>
+        <td>2C</td>
+        <td>3C</td>
+        <td>4F</td>
+    </tr>
+</table>';
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// Print some HTML Cells
+
+$html = '<span color="red">red</span> <span color="green">green</span> <span color="blue">blue</span><br /><span color="red">red</span> <span color="green">green</span> <span color="blue">blue</span>';
+
+$pdf->SetFillColor(255,255,0);
+
+$pdf->writeHTMLCell(0, 0, '', '', $html, 'LRTB', 1, 0, true, 'L', true);
+$pdf->writeHTMLCell(0, 0, '', '', $html, 'LRTB', 1, 1, true, 'C', true);
+$pdf->writeHTMLCell(0, 0, '', '', $html, 'LRTB', 1, 0, true, 'R', true);
+
+// reset pointer to the last page
+$pdf->lastPage();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Print a table
+
+// add a page
+$pdf->AddPage();
+
+// create some HTML content
+$html = '<h1>Image alignments on HTML table</h1>
+<table cellpadding="1" cellspacing="1" border="1" style="text-align:center;">
+<tr><td><img src="images/logo_example.png" border="0" height="41" width="41" /></td></tr>
+<tr style="text-align:left;"><td><img src="images/logo_example.png" border="0" height="41" width="41" align="top" /></td></tr>
+<tr style="text-align:center;"><td><img src="images/logo_example.png" border="0" height="41" width="41" align="middle" /></td></tr>
+<tr style="text-align:right;"><td><img src="images/logo_example.png" border="0" height="41" width="41" align="bottom" /></td></tr>
+<tr><td style="text-align:left;"><img src="images/logo_example.png" border="0" height="41" width="41" align="top" /></td></tr>
+<tr><td style="text-align:center;"><img src="images/logo_example.png" border="0" height="41" width="41" align="middle" /></td></tr>
+<tr><td style="text-align:right;"><img src="images/logo_example.png" border="0" height="41" width="41" align="bottom" /></td></tr>
+</table>';
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// reset pointer to the last page
+$pdf->lastPage();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Print all HTML colors
+
+// add a page
+$pdf->AddPage();
+
+$textcolors = '<h1>HTML Text Colors</h1>';
+$bgcolors = '<hr /><h1>HTML Background Colors</h1>';
+
+foreach(TCPDF_COLORS::$webcolor as $k => $v) {
+    $textcolors .= '<span color="#'.$v.'">'.$v.'</span> ';
+    $bgcolors .= '<span bgcolor="#'.$v.'" color="#333333">'.$v.'</span> ';
+}
+
+// output the HTML content
+$pdf->writeHTML($textcolors, true, false, true, false, '');
+$pdf->writeHTML($bgcolors, true, false, true, false, '');
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Test word-wrap
+
+// create some HTML content
+$html = '<hr />
+<h1>Various tests</h1>
+<a href="#2">link to page 2</a><br />
+<font face="courier"><b>thisisaverylongword</b></font> <font face="helvetica"><i>thisisanotherverylongword</i></font> <font face="times"><b>thisisaverylongword</b></font> thisisanotherverylongword <font face="times">thisisaverylongword</font> <font face="courier"><b>thisisaverylongword</b></font> <font face="helvetica"><i>thisisanotherverylongword</i></font> <font face="times"><b>thisisaverylongword</b></font> thisisanotherverylongword <font face="times">thisisaverylongword</font> <font face="courier"><b>thisisaverylongword</b></font> <font face="helvetica"><i>thisisanotherverylongword</i></font> <font face="times"><b>thisisaverylongword</b></font> thisisanotherverylongword <font face="times">thisisaverylongword</font> <font face="courier"><b>thisisaverylongword</b></font> <font face="helvetica"><i>thisisanotherverylongword</i></font> <font face="times"><b>thisisaverylongword</b></font> thisisanotherverylongword <font face="times">thisisaverylongword</font> <font face="courier"><b>thisisaverylongword</b></font> <font face="helvetica"><i>thisisanotherverylongword</i></font> <font face="times"><b>thisisaverylongword</b></font> thisisanotherverylongword <font face="times">thisisaverylongword</font>';
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// Test fonts nesting
+$html1 = 'Default <font face="courier">Courier <font face="helvetica">Helvetica <font face="times">Times <font face="dejavusans">dejavusans </font>Times </font>Helvetica </font>Courier </font>Default';
+$html2 = '<small>small text</small> normal <small>small text</small> normal <sub>subscript</sub> normal <sup>superscript</sup> normal';
+$html3 = '<font size="10" color="#ff7f50">The</font> <font size="10" color="#6495ed">quick</font> <font size="14" color="#dc143c">brown</font> <font size="18" color="#008000">fox</font> <font size="22"><a href="http://www.tcpdf.org">jumps</a></font> <font size="22" color="#a0522d">over</font> <font size="18" color="#da70d6">the</font> <font size="14" color="#9400d3">lazy</font> <font size="10" color="#4169el">dog</font>.';
+
+$html = $html1.'<br />'.$html2.'<br />'.$html3.'<br />'.$html3.'<br />'.$html2;
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// test pre tag
+
+// add a page
+$pdf->AddPage();
+
+$html = <<<EOF
+<div style="background-color:#880000;color:white;">
+Hello World!<br />
+Hello
 </div>
-</div>
-<div class="col-xs-6 text-right">
-<a href="http://www.canada.ca/en/contact/feedback.html" class="btn btn-default"><span class="glyphicon glyphicon-comment mrgn-rght-sm"></span>Feedback<span class="wb-inv"> about this web site</span></a>
-</div>
-</div>
-</main>
-<footer role="contentinfo" id="wb-info">
-<nav role="navigation" class="container visible-sm visible-md visible-lg wb-navcurr">
-<h2 class="wb-inv">About this site</h2>
-<div class="row">
-<div class="col-sm-3 col-lg-3">
-<section>
-<h3>Contact information</h3>
-<ul class="list-unstyled">
-<li><a href="#">Link 1</a></li>
-<li><a href="#">Link 2</a></li>
-<li><a href="#">Link 3</a></li>
-</ul>
-</section>
-<section>
-<h3>News</h3>
-<ul class="list-unstyled">
-<li><a href="http://news.gc.ca/web/index-en.do">Newsroom</a></li>
-<li><a href="http://news.gc.ca/web/nwsprdct-en.do?mthd=tp&amp;crtr.tp1D=1">News releases</a></li>
-<li><a href="http://news.gc.ca/web/nwsprdct-en.do?mthd=tp&amp;crtr.tp1D=3">Media advisories</a></li>
-<li><a href="http://news.gc.ca/web/nwsprdct-en.do?mthd=tp&amp;crtr.tp1D=970">Speeches</a></li>
-<li><a href="http://news.gc.ca/web/nwsprdct-en.do?mthd=tp&amp;crtr.tp1D=980">Statements</a></li>
-</ul>
-</section>
-</div>
-<section class="col-sm-3 col-lg-3">
-<h3>Government</h3>
-<ul class="list-unstyled">
-<li><a href="http://www.canada.ca/en/gov/system/index.html">How government works</a></li>
-<li><a href="http://www.canada.ca/en/gov/dept/index.html">Departments &amp; agencies</a></li>
-<li><a href="http://pm.gc.ca/eng">Prime Minister</a></li>
-<li><a href="http://www.canada.ca/en/gov/ministers/index.html">Ministers</a></li>
-<li><a href="http://www.canada.ca/en/gov/policy/index.html">Policies, regulations &amp; laws</a></li>
-<li><a href="http://www.canada.ca/en/gov/libraries/index.html">Libraries</a></li>
-<li><a href="http://www.canada.ca/en/gov/publications/index.html">Publications</a></li>
-<li><a href="http://www.canada.ca/en/gov/statistics/index.html">Statistics &amp; data</a></li>
-<li><a href="http://www.canada.ca/en/newsite.html">About Canada.ca</a></li>
-</ul>
-</section>
-<section class="col-sm-3 col-lg-3 brdr-lft">
-<h3>Transparency</h3>
-<ul class="list-unstyled">
-<li><a href="http://www.canada.ca/en/transparency/reporting.html">Government-wide reporting</a></li>
-<li><a href="http://open.canada.ca/en/">Open government</a></li>
-<li><a href="http://www.canada.ca/en/transparency/disclosure.html">Proactive disclosure</a></li>
-<li><a href="http://www.canada.ca/en/transparency/terms.html">Terms &amp; conditions</a></li>
-<li><a href="http://www.canada.ca/en/transparency/privacy.html">Privacy</a></li>
-</ul>
-</section>
-<div class="col-sm-3 col-lg-3 brdr-lft">
-<section>
-<h3>Feedback</h3>
-<p><a href="http://www.canada.ca/en/contact/feedback.html"><img src="./assets/feedback.png" alt="Feedback about this Web site"></a></p>
-</section>
-<section>
-<h3>Social media</h3>
-<p><a href="http://www.canada.ca/en/social/index.html"><img src="./assets/social.png" alt="Social media"></a></p>
-</section>
-<section>
-<h3>Mobile centre</h3>
-<p><a href="http://www.canada.ca/en/mobile/index.html"><img src="./assets/mobile.png" alt="Mobile centre"></a></p>
-</section>
-</div>
-</div>
-</nav>
-<div class="brand">
-<div class="container">
-<div class="row">
-<div class="col-xs-6 visible-sm visible-xs tofpg">
-<a href="#wb-cont">Top of Page <span class="glyphicon glyphicon-chevron-up"></span></a>
-</div>
-<div class="col-xs-6 col-md-12 text-right">
-<object type="image/svg+xml" tabindex="-1" role="img" data="./assets/wmms-blk.svg" aria-label="Symbol of the Government of Canada"></object>
-</div>
-</div>
-</div>
-</div>
-</footer>
-<!--[if gte IE 9 | !IE ]><!-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="./js/wet-boew.min.js"></script>
-<!--<![endif]-->
-<!--[if lt IE 9]>
-<script src="./js/ie8-wet-boew2.min.js"></script>
-<![endif]-->
-<script src="./js/theme.min.js"></script>
-</body>
-</html>
+<pre style="background-color:#336699;color:white;">
+int main() {
+    printf("HelloWorld");
+    return 0;
+}
+</pre>
+<tt>Monospace font</tt>, normal font, <tt>monospace font</tt>, normal font.
+<br />
+<div style="background-color:#880000;color:white;">DIV LEVEL 1<div style="background-color:#008800;color:white;">DIV LEVEL 2</div>DIV LEVEL 1</div>
+<br />
+<span style="background-color:#880000;color:white;">SPAN LEVEL 1 <span style="background-color:#008800;color:white;">SPAN LEVEL 2</span> SPAN LEVEL 1</span>
+EOF;
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// test custom bullet points for list
+
+// add a page
+$pdf->AddPage();
+
+$html = <<<EOF
+<h1>Test custom bullet image for list items</h1>
+<ul style="font-size:14pt;list-style-type:img|png|4|4|images/logo_example.png">
+    <li>test custom bullet image</li>
+    <li>test custom bullet image</li>
+    <li>test custom bullet image</li>
+    <li>test custom bullet image</li>
+<ul>
+EOF;
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// reset pointer to the last page
+$pdf->lastPage();
+
+// ---------------------------------------------------------
+
+//Close and output PDF document
+$pdf->Output('example_006.pdf', 'I');
+
+//============================================================+
+// END OF FILE
+//============================================================+
