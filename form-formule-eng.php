@@ -1,42 +1,4 @@
-<?php
-//Generic Functions
-include_once "var.php";
-include_once "val.php";
 
-/* Build fields for the form. */
-$arrFields = array();
-$x=0;
-$msgError = '';
-
-/* If the form has been posted, validate it. */
-//print_r($_POST);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	/* Take all posted variables and turn them into session variables. */
-	session_start();
-	foreach ($_POST as $key => $value){
-		if (is_array($_POST[$key])){
-			for ($x=0; $x<count($_POST[$key]);$x++){ // as $arrValue){
-				$_SESSION[$key][$x] = htmlentities($_POST[$key][$x], ENT_QUOTES);
-			}
-		}else{
-			$_SESSION[$key] = htmlentities($value, ENT_QUOTES);
-		}
-	}
-
-	if (!$_POST['swch']){
-		$msgError = validate("eng");
-		if ($msgError != ''){
-			$msgError = '<p class="color-attention">Please correct the following error(s) before proceeding:</p><ul class="color-attention noBullet">' . $msgError . '</ul>';
-		}else{
-			$nextURL = 'Location: final-finale-eng.php';
-			header( $nextURL );
-		}
-	}/*else{
-		$nextURL = 'Location: form-formule-fra.php';
-		header( $nextURL );
-	}*/
-}
-?>
 <!DOCTYPE html>
 <!--[if lt IE 9]><html class="no-js lt-ie9" lang="en"><![endif]-->
 <!--[if gt IE 8]><!-->
@@ -128,86 +90,508 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 </div>
 </nav> </header> <main role="main" property="mainContentOfPage" class="container">
-<?php /* === DDD Code === */ ?>
 <h1 id="wb-cont">Report a Side Effect</h1>
-<?php /*?>
-<p><?php echo $formAdText[0];?></p>
-<?php */?>
 <div class="accordion"> <details class="acc-group"> <summary class="wb-toggle tgl-tab" data-toggle='{"parent": ".accordion", "group": ".acc-group"}'>Privacy Statement</summary>
-  <div class="tgl-panel"> <?php echo $priState[0];?> </div>
+  <div class="tgl-panel"> <p>In the context of Health Canada's side effect reporting program(the Canada Vigilance Program), personal information is collected pursuant to section 4 of the <em>Department of Health Act</em>, for the purpose of monitoring licensed products, detecting potential emerging safety issues and trends, mitigating the risks and improving the safe use and efficacy of the health products.  Information related to the identity of the patient and/or reporter will be protected as personal information under the <em>Privacy Act</em>, and in the case of an access to information request, under the <em>Access to Information Act</em>. Suspected health product side effect-related information that is voluntarily submitted to Health Canada is maintained in a secure computerized database. The program endeavours to use and disclose only de-identified information but may use and disclose personal information that is not de-identified as permitted under the Privacy Act.</p>
+				<p>For further details regarding the personal information collected under this program, visit the Personal Information Bank; Health Canada; Health Products and Food Branch; Branch Incident Reporting System; PIB#PPU 088 at: <a href="http://www.hc-sc.gc.ca/ahc-asc/activit/atip-aiprp/infosource/index-eng.php#a2">http://www.hc-sc.gc.ca/ahc-asc/activit/atip-aiprp/infosource/index-eng.php#a2</a>. Every Canadian individual has the right to access their own personal information and is entitled to request correction to ensure accuracy of their information. If you wish to exercise this right, contact the <a href="http://www.tbs-sct.gc.ca/tbsf-fsct/350-58-eng.ASP">Treasury Board of Canada Secretariat</a>.</p> </div>
   </details> <details class="acc-group"> <summary class="wb-toggle tgl-tab" data-toggle='{"parent": ".accordion", "group": ".acc-group"}'>Instructions</summary>
-  <div class="tgl-panel"> <?php echo $instr[0];?> </div>
+  <div class="tgl-panel"> <p>Complete all mandatory fields, marked by a *, and provide as much detail as possible for the remaining fields.</p>
+				<p>The "Reference #" field, should be used by the reporter, as a way to easily locate the side effect report should Health Canada need to follow up for more information; do not  use the name of the person who had the side effect.</p> </div>
   </details> <details class="acc-group"> <summary class="wb-toggle tgl-tab" data-toggle='{"parent": ".accordion", "group": ".acc-group"}'>About</summary>
-  <div class="tgl-panel"> <?php echo $about[0];?> </div>
+  <div class="tgl-panel"> <h2>What is a Side Effect?</h2>
+        <p>Side effects are troublesome symptoms or feelings that occur when taking a health product. Side effects can range from minor irritations, such as a skin rash, to serious and life-threatening reactions, such as a heart attack of liver damage. A side effect can also be when a product has no effect or has not performed the intended treatment. They can occur within minutes after taking a medicine, or can take years to develop.</p>
+        <p>Side effects are troublesome symptoms or feelings that you may not expect that show up when you are taking a medicine. Side effects are sometimes also called adverse reactions, especially by doctors and other health professionals. </p>
+        <h2>What types of Side Effects should be reported?</h2>
+        <p>All suspected side effects should be reported, especially those that are:</p>
+        <ul>
+        	<li><em>Unexpected</em>, regardless of their severity, i.e., not consistent with product information or labelling; or</li>
+        	<li><em>Serious</em>, whether expected or not, i.e., that requires being admitted to the hospital,  lengthened hospital stay, causes a birth defect, disability, is life-threatening or results in death;</li>
+        	<li>Reactions to <em>recently marketed health products</em> (on the market for less than five years), regardless of their nature or severity.</li>
+        </ul> </div>
   </details> </div>
 <hr />
-<?php /*?>
-<?php echo $pageError; ?>
-<p><?php echo $stepData[0]->introText[0];?></p>
-<div>
-  <h2><?php echo $stepData[0]->stepTitle[0];?></h2>
-</div>
-<?php */?>
-<?php echo $msgError;?>
 <form name="aer" id="aer" method="post">
   <p class="text-danger font-small">* Mandatory Field</p>
   <div class="accordion">
     <div class="tabpanels"> <details class="acc-group"> <summary class="wb-toggle tgl-tab" data-toggle='{"parent": ".accordion", "group": ".acc-group"}'>A. About the person who had the side effect.</summary>
       <div class="tgl-panel">
-        <?php $incForm = '01-en.php';
-			include_once $incForm; //These files hold the actual form questions. ?>
+        	<div class="form-group">
+	    <fieldset>
+		<!-- class required was added and the tag was changed from label to legend -->
+		<legend>Reference # (if applicable):</legend> <span class="helperText">The "Reference #" field, should be used by the reporter, as a way to easily locate the side effect report should Health Canada need to follow up for more information; do not use the name of the person who had the side effect.</span><br />
+		<input id="patientReference" name="patientReference" type="text" placeholder="" class="width-100"  maxlength="60" value=""/>
+	  </fieldset>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend class="required">Age: </legend>
+			<input title="age" name="age" type="text" placeholder="ex. 21" class="width-20"  value=""/>
+			&nbsp;&nbsp;
+			<label for="years-1" class="form-radio form-label-inline">
+				<input type="radio" name="age1" id="years-1" value="years:;:ans"/>
+				years</label>
+			&nbsp;&nbsp;
+			<label for="months-1" class="form-radio form-label-inline">
+				<input type="radio" name="age1" id="months-1" value="months:;:mois"/>
+				months</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend class="required">Sex: </legend>
+			<label for="male" class="form-radio form-label-inline">
+				<input type="radio" name="patientSex" id="male" value="Male:;:Homme"/>
+				Male</label>
+			&nbsp;&nbsp;
+			<label for="female" class="form-radio form-label-inline">
+				<input type="radio" name="patientSex" id="female" value="Female:;:Femme"/>
+				Female</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend>Height: </legend>
+			<input type="radio" name="height1" id="cm-1" value="cm" onchange="swapHeight('cm-1', 'height')"/>
+			<label for="cm-1" class="form-radio form-label-inline">cm</label>
+			&nbsp;
+			<input title="height" name="height" type="text" placeholder="ex. 174" class="width-20"  value=""/>
+			&nbsp;<strong>or</strong>&nbsp;
+			<input type="radio" name="height1" id="ft-1" value="ft:;:pi" onchange="swapHeight('ft-1', 'height2')"/>
+			<label for="ft-1" class="form-radio form-label-inline">&nbsp;ft</label>
+			&nbsp;
+			<input title="height2" name="height2" type="text" placeholder="ex. 5" class="width-20"  value=""/>
+			<label for="height3" class="form-radio form-label-inline">&nbsp;in&nbsp;</label>
+			<input id="height3" name="height3" type="text" placeholder="ex. 6" class="width-20"  value=""/>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend>Weight: </legend>
+			<input type="radio" name="weight1" id="kgs-1" value="kgs" onchange="swapWeight('cm-1', 'height')"/>
+			<label for="kgs-1" class="form-radio form-label-inline">kgs</label>
+			&nbsp;
+			<input title="weight" name="weight" type="text" placeholder="ex. 169" class="width-20"  value=""/>
+			&nbsp;<strong>or</strong>&nbsp;
+			<input type="radio" name="weight1" id="lbs-1" value="lbs" onchange="swapWeight('cm-1', 'height')"/>
+			<label for="lbs-1" class="form-radio form-label-inline">lbs&nbsp;</label>
+			<input name="weight2" title="weight2" type="text" placeholder="ex. 169" class="width-20"  value=""/>
+			<label for="weight3" class="form-radio form-label-inline">&nbsp;oz&nbsp;</label>
+			<input name="weight3" id="weight3" type="text" placeholder="ex. 169" class="width-20"  value=""/>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<label for="patientMedHistory" class="dddtooltip"> Medical history and other related information <span class="helperText">(allergies, pregnancy, smoking/alcohol use, liver disease, etc.)</span></label>
+		<textarea maxlength="3000" id="patientMedHistory" name="patientMedHistory" class="width-100" rows="3" cols="100" placeholder="(allergies, pregnancy, smoking/alcohol use, liver disease, etc.)"></textarea>
+	</div>
+<script type="text/javascript">
+	function swapHeight(id, box){
+		if (document.getElementById('ft-1').checked != true){
+			document.getElementById('height2').value = '';
+			document.getElementById('height3').value = '';
+			document.getElementById('height2').disabled = true;
+			document.getElementById('height3').disabled = true;
+			document.getElementById('height').disabled = false;
+		}else if (document.getElementById('cm-1').checked != true){
+			document.getElementById('height').value = '';
+			document.getElementById('height2').disabled = false;
+			document.getElementById('height3').disabled = false;
+			document.getElementById('height').disabled = true;
+		}
+		if ((document.getElementById('ft-1').checked != true)&&(document.getElementById('cm-1').checked != true)){
+			document.getElementById('height').value = '';
+			document.getElementById('height2').value = '';
+			document.getElementById('height3').value = '';
+			document.getElementById('height').disabled = true;
+			document.getElementById('height2').disabled = true;
+			document.getElementById('height3').disabled = true;
+		}
+	}
+	function swapWeight(id, box){
+		if (document.getElementById('lbs-1').checked != true){
+			document.getElementById('weight2').value = '';
+			document.getElementById('weight3').value = '';
+			document.getElementById('weight2').disabled = true;
+			document.getElementById('weight3').disabled = true;
+			document.getElementById('weight').disabled = false;
+		}else if (document.getElementById('kgs-1').checked != true){
+			document.getElementById('weight').value = '';
+			document.getElementById('weight2').disabled = false;
+			document.getElementById('weight3').disabled = false;
+			document.getElementById('weight').disabled = true;
+		}
+		if ((document.getElementById('kgs-1').checked != true)&&(document.getElementById('lbs-1').checked != true)){
+			document.getElementById('weight').value = '';
+			document.getElementById('weight2').value = '';
+			document.getElementById('weight3').value = '';
+			document.getElementById('weight').disabled = true;
+			document.getElementById('weight2').disabled = true;
+			document.getElementById('weight3').disabled = true;
+		}
+	}
+	function clearAll() {
+			document.getElementById('height').value = '';
+			document.getElementById('height2').value = '';
+			document.getElementById('height3').value = '';
+			document.getElementById('height').disabled = true;
+			document.getElementById('height2').disabled = true;
+			document.getElementById('height3').disabled = true;
+			document.getElementById('weight').value = '';
+			document.getElementById('weight2').value = '';
+			document.getElementById('weight3').value = '';
+			document.getElementById('weight').disabled = true;
+			document.getElementById('weight2').disabled = true;
+			document.getElementById('weight3').disabled = true;
+	}
+</script>
       </div>
       </details> <details class="acc-group"> <summary class="wb-toggle tgl-tab" data-toggle='{"parent": ".accordion", "group": ".acc-group"}'>B. Reporter Information</summary>
       <div class="tgl-panel">
-        <?php $incForm = '02-en.php';
-			include_once $incForm; //These files hold the actual form questions. ?>
+        	<div class="form-group">
+	<fieldset>
+	   <!-- The tag was changed from label to legend -->
+		<legend class="required">Name:</legend> 
+		<input id="reporterName" name="reporterName" type="text" placeholder="John Smith" class="width-40"  maxlength="40" value=""/>
+	</fieldset>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend class="required">Telephone: </legend>
+			(area code)&nbsp;(<input title="reporterPhone1" name="reporterPhone1" type="text" placeholder="xxx"  maxlength="3" value=""/>)&nbsp;<input title="reporterPhone2" name="reporterPhone2" type="text" placeholder="xxx" maxlength="3" value=""/>&nbsp;&mdash;&nbsp;<input title="reporterPhone3" name="reporterPhone3" type="text" placeholder="xxxx" maxlength="4" value=""/>&nbsp;ext.&nbsp;<input title="reporterPhone4" name="reporterPhone4" type="text" placeholder="xxxxx" maxlength="8" value=""/>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<label for="reporterAddress">Address:</label><br />
+		<input id="reporterAddress" name="reporterAddress" type="text" placeholder="123 1st Street" class="width-100"  maxlength="100" value=""/>
+	</div>
+	<div class="form-group">
+		<label for="reporterCity">City:</label><br />
+		<input id="reporterCity" name="reporterCity" type="text" placeholder="Ottawa" class="width-100"  maxlength="100" value=""/>
+	</div>
+	<div class="form-group">
+		<label for="reporterProvince">Province/Territory:</label><br />
+		<select name="reporterProvince" id="reporterProvince" >
+            <option value="">Select</option>
+			<option value="AB">Alberta</option>
+			<option value="BC">British Columbia</option>
+			<option value="MB">Manitoba</option>
+			<option value="NB">New Brunswick</option>
+			<option value="NL">Newfoundland and Labrador</option>
+			<option value="NT">Northwest Territories</option>
+			<option value="NS">Nova Scotia</option>
+			<option value="NU">Nunavut</option>
+			<option value="ON">Ontario</option>
+			<option value="PE">Prince Edward Island</option>
+			<option value="QC">Quebec</option>
+			<option value="SK">Saskatchewan</option>
+			<option value="YT">Yukon</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="reporterEmail">Email Address:</label><br />
+		<input id="reporterEmail" oninvalid="InvalidMsg(this);" oninput="InvalidMsg(this);" name="reporterEmail" type="email" placeholder="yourname@website.com" class="width-60"  maxlength="60" value=""/>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend>Preferred language: </legend>
+			<label for="english" class="form-radio form-label-inline">
+			<input type="radio" name="reporterLanguage" id="english" value="English:;:anglais"/>
+			English</label>
+			<label for="french" class="form-radio form-label-inline">
+			<input type="radio" name="reporterLanguage" id="french" value="French:;:fran&ccedil;ais"/>
+			French</label>
+		</fieldset>
+	</div> 
+	<div class="form-group">
+		<label for="reporterOrg">Organization (if applicable):</label><br />
+		<input id="reporterOrg" name="reporterOrg" type="text" placeholder="" class="width-100"  maxlength="200" value=""/>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend>Select one that best describes you: </legend>
+			<label for="patient" class="form-radio">
+			<input type="radio" name="reporterDescribe" id="patient" value="Patient" onchange="swapField('other', 'textreporterDescribe')"/>
+			Consumer/Patient</label><br />
+			<label for="physician" class="form-radio">
+			<input type="radio" name="reporterDescribe" id="physician" value="Physician:;:Médecin" onchange="swapField('other', 'textreporterDescribe')"/>
+			Physician</label><br />
+			<label for="pharmacist" class="form-radio">
+			<input type="radio" name="reporterDescribe" id="pharmacist" value="Pharmacist:;:Pharmacien" onchange="swapField('other', 'textreporterDescribe')"/>
+			Pharmacist</label><br />
+			<label for="other" class="form-radio">
+			<input type="radio" name="reporterDescribe" id="other" value="Other:;:Autre" onchange="swapField('other', 'textreporterDescribe')"/>
+			Other (specify)</label>
+			<input title="textreporterDescribe" name="textreporterDescribe" type="text" class="other width-60"  maxlength="60" value=""/>
+		</fieldset>
+	</div>
+    <script type="text/javascript">
+		function InvalidMsg(textbox){
+			if (textbox.value == ''){
+				textbox.setCustomValidity(''); //textbox.setCustomValidity('The email address is formatted incorrectly.');
+			}else if (textbox.validity.typeMismatch){
+				textbox.setCustomValidity('The email address is formatted incorrectly.');
+			}else{
+			   textbox.setCustomValidity('');
+			}
+			return true;
+		}
+	</script>
       </div>
       </details> <details class="acc-group"> <summary class="wb-toggle tgl-tab" data-toggle='{"parent": ".accordion", "group": ".acc-group"}'>C. Side Effect</summary>
       <div class="tgl-panel">
-        <?php $incForm = '03-en.php';
-			include_once $incForm; //These files hold the actual form questions. ?>
+        	<div class="form-group">
+		<fieldset>
+        				<legend>Seriousness of the side effect:</legend>
+			<label for="deathDate" class="form-radio">
+			<input type="checkbox" name="seriousness[]" id="deathDate" value="Death:;:Décès" onchange="swapField('deathDate', 'textdeathDate')"/>
+			Death (provide date)</label><br />
+			<input  name="textseriousness" id="textseriousness" class="width-40" value="" /> (<abbr title="Four digits year, dash, two digits month, dash, two digits day">YYYY-MM-DD</abbr>)<br />
+			<label for="lifeThreat" class="form-radio">
+			<input type="checkbox" name="seriousness[]" id="lifeThreat" value="Life-threatening:;:Met la vie en danger" onchange="swapField('deathDate', 'textdeathDate')"/>
+			Life-threatening</label><br />
+			<label for="admHosp" class="form-radio">
+			<input type="checkbox" name="seriousness[]" id="admHosp" value="Admitted to hospital:;:Hospitalisation" onchange="swapField('deathDate', 'textdeathDate')"/>
+			Admitted to hospital</label><br />
+			<label for="hospStay" class="form-radio">
+			<input type="checkbox" name="seriousness[]" id="hospStay" value="Lengthened hospital stay:;:Prolongation d'une hospitalisation" onchange="swapField('deathDate', 'textdeathDate')"/>
+			Lengthened hospital stay</label><br />
+			<label for="disability" class="form-radio">
+			<input type="checkbox" name="seriousness[]" id="disability" value="Disability:;:Incapacité" onchange="swapField('deathDate', 'textdeathDate')"/>
+			Disability</label><br />
+			<label for="birthDefect" class="form-radio">
+			<input type="checkbox" name="seriousness[]" id="birthDefect" value="Birth Defect:;:Malformation congénitale" onchange="swapField('deathDate', 'textdeathDate')"/>
+			Birth Defect</label><br />
+			<label for="medAttention" class="form-radio">
+			<input type="checkbox" name="seriousness[]" id="medAttention" value="Needed medical attention:;:Besoin d'intervention médical" onchange="swapField('deathDate', 'textdeathDate')"/>
+			Needed medical attention</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend class="required">Recovered after side effect:</legend>
+			<label for="recoveredYes" class="form-radio">
+			<input type="radio" name="recovered" id="recoveredYes" value="Yes:;:Oui" onchange="swapField('recovering', 'textrecovered')"/>
+			Yes</label><br />
+			<label for="recoveredNo" class="form-radio">
+			<input type="radio" name="recovered" id="recoveredNo" value="No:;:Non" onchange="swapField('recovering', 'textrecovered')"/>
+			No</label><br />
+			<label for="recoveredUn" class="form-radio">
+			<input type="radio" name="recovered" id="recoveredUn" value="Unknown:;:Inconnu" onchange="swapField('recovering', 'textrecovered')"/>
+			Unknown</label><br />
+			<label for="recovering" class="form-radio">
+			<input type="radio" name="recovered" id="recovering" value="Recovering:;:En récupération" onchange="swapField('recovering', 'textrecovered')"/>
+			Recovering (explain)</label>
+			<input title="textrecovered" name="textrecovered" type="text" class="other width-60"  maxlength="500" value="" />
+		</fieldset>
+	</div>
+	<!-- 
+	<div class="form-group">
+		<label for="startDate" class="required">Side effect start date:</label><br />
+		<input id="startDate" name="startDate" type="date" data-rule-dateiso="true" class="width-80" value=""/>
+	</div> -->
+	<div class="form-group">
+	<label for="startDate" class="required">Side effect start date:</label><br />
+	<input id="startDate" name="startDate" class="width-80" value=""/><br />(<abbr title="Four digits year, dash, two digits month, dash, two digits day">YYYY-MM-DD</abbr>)
+</div>
+<div class="form-group">
+	<label for="endDate">Side effect end date:</label><br />
+	<input id="endDate" name="endDate" class="width-80" value=""/><br />(<abbr title="Four digits year, dash, two digits month, dash, two digits day">YYYY-MM-DD</abbr>)
+</div>
+   <!-- 
+	<div class="form-group">
+	<label for="endDate">Side effect end date:</label><br />
+		<input id="endDate" name="endDate" type="date" data-rule-dateiso="true" class="width-80" value="" />
+	</div>
+	-->
+	<div class="form-group">
+		<label for="descSideEffect" class="required"><span class="dddtooltip">Describe the side effect: <span class="helperText">(timelines, treatment, etc.)</span></span></label><br />
+		<textarea maxlength="3000" id="descSideEffect" name="descSideEffect" class="width-100" rows="6" cols="100" placeholder="(timelines, treatment, etc.)"></textarea>
+	</div>
       </div>
       </details> <details class="acc-group"> <summary class="wb-toggle tgl-tab" data-toggle='{"parent": ".accordion", "group": ".acc-group"}'>D. Suspected Health Product</summary>
       <div class="tgl-panel">
-        <?php $incForm = '04-en.php';
-			include_once $incForm; //These files hold the actual form questions. ?>
+        	<div class="form-group">
+	    <fieldset>
+		<legend class="required">Product name:</legend>
+		<input id="productName" name="productName" type="text" placeholder="" class="width-60"  maxlength="500" value=""/>
+	   </fieldset>
+	</div>
+	<div class="form-group">
+	    <fieldset>
+		<legend>Strength:</legend>
+		<input id="productStrength" name="productStrength" type="text" placeholder="" class="width-60"  maxlength="200" value=""/>
+	     </fieldset>
+	</div>
+	<div class="form-group">
+	   <fieldset>
+		<legend>Manufacturer:</legend>
+		<input id="productManufacturer" name="productManufacturer" type="text" placeholder="" class="width-60"  maxlength="200" value=""/>
+	   </fieldset>
+	</div>
+	<div class="form-group">
+	    <fieldset>
+		<legend>Lot #:</legend>
+		<input id="productLot" name="productLot" type="text" placeholder="" class="width-60"  maxlength="200" value=""/>
+	   </fieldset>
+	</div>
+	<div class="form-group">
+	   <fieldset>
+		<legend>DIN #/NPN #:</legend>
+		<input id="productDIN" name="productDIN" type="text" placeholder="" class="width-60"  maxlength="200" value=""/>
+	   </fieldset>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend>Country of purchase:</legend>
+			<label for="countryCnd" class="form-radio">
+			<input name="purchaseCountry" type="radio" id="countryCnd" value="Canada" checked="checked" onchange="swapField('countryOther', 'textpurchaseCountry')"/>
+			Canada</label><br />
+			<label for="countryUSA" class="form-radio">
+			<input type="radio" name="purchaseCountry" id="countryUSA" value="united states:;:états-unis" onchange="swapField('countryOther', 'textpurchaseCountry')"/>
+			United States</label><br />
+			<label for="countryOther" class="form-radio">
+			<input type="radio" name="purchaseCountry" id="countryOther" value="other:;:autre" onchange="swapField('countryOther', 'textpurchaseCountry')"/>
+			Other (specify)</label>
+			<input title="textpurchaseCountry" name="textpurchaseCountry" type="text" class="other width-60"  maxlength="300" value="" />
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<fieldset>
+			<legend>How it was purchased/obtained:</legend>
+			<label for="howPharmacy" class="form-radio">
+			<input type="radio" name="purchaseHow" id="howPharmacy" value="Pharmacy" onchange="swapField('howOther', 'textpurchaseHow')"/>
+			Pharmacy</label><br />
+			<label for="howGrocery" class="form-radio">
+			<input type="radio" name="purchaseHow" id="howGrocery" value="Grocery Store" onchange="swapField('howOther', 'textpurchaseHow')"/>
+			Grocery Store</label><br />
+			<label for="howInternernet" class="form-radio">
+			<input type="radio" name="purchaseHow" id="howInternernet" value="Internet" onchange="swapField('howOther', 'textpurchaseHow')"/>
+			Internet</label><br />
+			<label for="howOther" class="form-radio">
+			<input type="radio" name="purchaseHow" id="howOther" value="other:;:autre" onchange="swapField('howOther', 'textpurchaseHow')"/>
+			Other (specify)</label>
+			<input title="textpurchaseHow" name="textpurchaseHow" type="text" class="other width-60"  maxlength="300" value="" />
+        </fieldset>
+	</div>
+	<div class="form-group">
+		<label for="prodStartDate" class="required">Product start date:</label><br />
+		<input id="prodStartDate" name="prodStartDate" class="width-80" value=""/><br />(<abbr title="Four digits year, dash, two digits month, dash, two digits day">YYYY-MM-DD</abbr>)
+	</div>
+	<div class="form-group">
+	    <!-- Class required was deleted as the end date is no longer mandatory -->
+		<label for="prodEndDate">Product end date:)</label><br />
+		<input id="prodEndDate" name="prodEndDate" class="width-80" value=""/><br />(<abbr title="Four digits year, dash, two digits month, dash, two digits day">YYYY-MM-DD</abbr>)
+	</div>
+	<div class="form-group">
+    	<fieldset>
+			<legend>At time of side effect specify:</legend>
+			<label for="productDosage" class="required">Dosage:</label>
+			<input id="productDosage" name="productDosage" type="text" placeholder="(strength and quantity)" class="width-60"  maxlength="200" value=""/><br />
+			<label for="productFrequency">Frequency:</label>
+			<input id="productFrequency" name="productFrequency" type="text" placeholder="(e.g. twice daily)" class="width-60"  maxlength="200" value=""/><br />
+			<label for="productHowTaken" class="required">How the product was taken:</label>
+			<input id="productHowTaken" name="productHowTaken" type="text" placeholder="(e.g. by mouth)" class="width-60"  maxlength="200" value=""/>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<label for="productTakenFor">What was the product prescribed/taken for?</label><br />
+		<input id="productTakenFor" name="productTakenFor" type="text" placeholder="" class="width-60"  maxlength="500" value=""/>
+	</div>
+	<div class="form-group">
+    	<fieldset>
+			<legend>Did use of the product stop after the side effect appeared?</legend>
+			<label for="stoppedYes" class="form-radio">
+			<input type="radio" name="productStopped" id="stoppedYes" value="Yes:;:Oui"/>
+			Yes</label><br />
+			<label for="stoppedNo" class="form-radio">
+			<input type="radio" name="productStopped" id="stoppedNo" value="No:;:Non"/>
+			No</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
+    	<fieldset>
+			<legend>If the product was stopped did the side effect stop?</legend>
+			<label for="effectStoppedYes" class="form-radio">
+			<input type="radio" name="productEffectStopped" id="effectStoppedYes" value="Yes:;:Oui"/>
+			Yes</label><br />
+			<label for="effectStoppedNo" class="form-radio">
+			<input type="radio" name="productEffectStopped" id="effectStoppedNo" value="No:;:Non"/>
+			No</label><br />
+			<label for="effectStoppedNotApply" class="form-radio">
+			<input type="radio" name="productEffectStopped" id="effectStoppedNotApply" value="Does not apply:;:Ne s'applique pas"/>
+			Does not apply</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
+    	<fieldset>
+			<legend>Was the product restarted after the side effect stopped?</legend>
+			<label for="restartedYes" class="form-radio">
+			<input type="radio" name="productRestarted" id="restartedYes" value="Yes:;:Oui"/>
+			Yes</label><br />
+			<label for="restartedNo" class="form-radio">
+			<input type="radio" name="productRestarted" id="restartedNo" value="No:;:Non"/>
+			No</label><br />
+			<label for="restartedNotApply" class="form-radio">
+			<input type="radio" name="productRestarted" id="restartedNotApply" value="Does not apply:;:Ne s'applique pas"/>
+			Does not apply</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
+    	<fieldset>
+			<legend>If the product was restarted, did the side effect return?</legend>
+			<label for="effectsReturnYes" class="form-radio">
+			<input type="radio" name="productRestartedEffectReturn" id="effectsReturnYes" value="Yes:;:Oui"/>
+			Yes</label><br />
+			<label for="effectsReturnNo" class="form-radio">
+			<input type="radio" name="productRestartedEffectReturn" id="effectsReturnNo" value="No:;:Non"/>
+			No</label><br />
+			<label for="effectsReturnNotApply" class="form-radio">
+			<input type="radio" name="productRestartedEffectReturn" id="effectsReturnNotApply" value="Does not apply:;:Ne s'applique pas"/>
+			Does not apply</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
+	    <fieldset>
+			<legend>Likelihood that product caused the side effect:</legend>
+			<label for="causedEffectCertain" class="form-radio">
+			<input type="radio" name="productCausedEffect" id="causedEffectCertain" value="Certain"/>
+			Certain</label><br />
+			<label for="causedEffectProbably" class="form-radio">
+			<input type="radio" name="productCausedEffect" id="causedEffectProbably" value="Probably - Likely:;:Probablement - vraisemblablement"/>
+			Probably/Likely</label><br />
+			<label for="causedEffectPossible" class="form-radio">
+			<input type="radio" name="productCausedEffect" id="causedEffectPossible" value="Possible:;:Possiblement"/>
+			Possible</label><br />
+			<label for="causedEffectNA" class="form-radio">
+			<input type="radio" name="productCausedEffect" id="causedEffectNA" value="Not available/Not assessable :;: Pas disponible/incapable de vérifier"/>
+			Not available/Not assessable</label><br />
+			<label for="causedEffectUnlikely" class="form-radio">
+			<input type="radio" name="productCausedEffect" id="causedEffectUnlikely" value="Unlikely"/>
+			Unlikely</label><br />
+			<label for="causedEffectUnrelated" class="form-radio">
+			<input type="radio" name="productCausedEffect" id="causedEffectUnrelated" value="Unrelated:;:Sans rapport"/>
+			Unrelated</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<label for="otherProductsTaken" class="dddtooltip">Other health products taken at the time of the side effect, excluding treatment:<span class="helperText">(length of use, timelines, etc.)</span>	</label><br />
+		<textarea id="otherProductsTaken" name="otherProductsTaken" class="width-100" rows="6" cols="100" maxlength="3000" placeholder="(length of use, timelines, etc.)"></textarea>
+	</div>
+	<div class="form-group">
+		<label for="relatedTestResults">Related test/laboratory results:</label><br />
+		<textarea id="relatedTestResults" name="relatedTestResults" class="width-100" rows="6" cols="100" maxlength="100"></textarea>
+	</div>
       </div>
       </details> </div>
   </div>
   <hr />
-  <?php /*
-echo '<ul class="btn-toolbar list-inline" role="toolbar">
-	<li class="btn-group">';
-if ($currProgress > 1){
-	echo '<input type="submit" name="submit-btn" id="submit-btn" value="Back" class="btn btn-default">';
-}
-echo '<a class="btn btn-default" href="form-formule-eng.php?clear=clear';
-echo '&amp;prog=';
-echo $currProgress;
-echo (isset($_POST['filename'])?'&amp;filename='.$_POST['filename']:(isset($_REQUEST['filename'])?'&amp;filename='.$_REQUEST['filename']:'');
-echo '" role="button">Clear</a>
-	</li>'; */
-?>
-  <p>Before submitting your side effect report, please review the information you provided.</p>
+    <p>Before submitting your side effect report, please review the information you provided.</p>
   <ul>
     <li class="btn-group">
-      <input type="submit" name="submit-btn" id="submit-btn" value="Submit<?php /*?>Next<?php */?>" class="btn btn-primary">
+      <input type="submit" name="submit-btn" id="submit-btn" value="Submit" class="btn btn-primary">
     </li>
   </ul>
-  <?php /*?>
-  <input type="hidden" value="<?php echo $filename;?>" name="filename" id="filename" />
-  <input type="hidden" value="<?php echo $stepData[0]->formName;?>" name="formname" id="formname" />
-  <input type="hidden" value="<?php echo $currProgress;?>" name="prog" id="prog" />
-  <input type="hidden" value="form-formule-fra.php" name="langSwch" id="langSwch" />
-  <?php */?>
-  <input type="hidden" value="0" name="swch" id="swch" />
+    <input type="hidden" value="0" name="swch" id="swch" />
 </form>
-<?php /*?>
-<div class="clear"></div>
-<hr>
-<h5>Progress</h5>
-<progress value="<?php echo $currProgress;?>" max="<?php echo $maxStep+1;?>" style="width:100%;"><span class="wb-invisible"><?php echo $progPerc;?>%</span></progress>
-<?php */?>
 <!-- DDD Scripts -->
 <script type="text/javascript">
 	function swapField(id, box){
@@ -236,7 +620,6 @@ echo '" role="button">Clear</a>
 	}
 </script>
 <!-- end -->
-<?php /* === END DDD Code === */ ?>
 <dl id="wb-dtmd" property="dateModified">
   <dt>Date modified:&#32;</dt>
   <dd> <time>2014-11-14</time> </dd>
